@@ -1,0 +1,89 @@
+/* pages/index/index.wxss */
+page { background: #F5F5F7; }
+
+.page { height: 100vh; display: flex; flex-direction: column; position: relative; }
+
+/* Template banner */
+.tpl-bar { display: flex; align-items: center; padding: 20rpx 32rpx;
+  background: #EEF0FF; border-bottom: 1rpx solid #DDE0FF; }
+.tpl-bar-icon { font-size: 28rpx; margin-right: 10rpx; }
+.tpl-bar-text { flex: 1; font-size: 26rpx; color: #576AFF; }
+.tpl-bar-arrow { font-size: 32rpx; color: #576AFF; }
+
+/* Scroll area */
+.form-scroll { flex: 1; }
+.form { padding: 24rpx 24rpx 0; }
+
+/* Field */
+.field { background: #fff; border-radius: 16rpx; padding: 28rpx 28rpx 20rpx;
+  margin-bottom: 20rpx; }
+.field-label { font-size: 26rpx; font-weight: 600; color: #1C1C1E; margin-bottom: 18rpx; }
+.req { color: #FF3B30; margin-left: 4rpx; }
+.field-label-row { display: flex; align-items: center; margin-bottom: 18rpx; }
+.badge { font-size: 20rpx; color: #8E8E93; background: #F0F0F5;
+  border-radius: 8rpx; padding: 2rpx 10rpx; margin-left: 10rpx; }
+.toggle { font-size: 28rpx; color: #8E8E93; margin-left: auto;
+  transition: transform 0.2s; }
+.toggle.open { transform: rotate(180deg); }
+
+/* Textarea */
+.textarea { width: 100%; min-height: 120rpx; font-size: 28rpx; color: #1C1C1E;
+  line-height: 1.6; box-sizing: border-box; }
+
+/* Picker */
+.picker-row { display: flex; align-items: center; justify-content: space-between;
+  background: #F5F5F7; border-radius: 12rpx; padding: 20rpx 24rpx; }
+.picker-val { font-size: 28rpx; color: #1C1C1E; }
+.picker-arrow { font-size: 36rpx; color: #8E8E93; line-height: 1; }
+.custom-input { margin-top: 16rpx; background: #F5F5F7; border-radius: 12rpx;
+  padding: 20rpx 24rpx; font-size: 28rpx; color: #1C1C1E; width: 100%;
+  box-sizing: border-box; }
+
+/* Platform tags */
+.tag-group { display: flex; flex-wrap: wrap; gap: 16rpx; }
+.tag { padding: 14rpx 28rpx; border-radius: 40rpx; font-size: 26rpx;
+  border: 2rpx solid #E0E0E8; color: #8E8E93; background: #F5F5F7;
+  transition: all 0.15s; }
+.tag-on { border-color: #576AFF; color: #576AFF; background: #EEF0FF; font-weight: 600; }
+
+/* Length segmented control */
+.seg-group { display: flex; gap: 16rpx; }
+.seg { flex: 1; display: flex; flex-direction: column; align-items: center;
+  padding: 20rpx 8rpx; border-radius: 12rpx; border: 2rpx solid #E0E0E8;
+  background: #F5F5F7; }
+.seg-on { border-color: #576AFF; background: #EEF0FF; }
+.seg-label { font-size: 30rpx; font-weight: 600; color: #1C1C1E; }
+.seg-on .seg-label { color: #576AFF; }
+.seg-desc { font-size: 20rpx; color: #8E8E93; margin-top: 4rpx; }
+.seg-on .seg-desc { color: #576AFF; }
+
+/* Bottom bar */
+.bottom-bar { position: fixed; bottom: 0; left: 0; right: 0;
+  padding: 16rpx 24rpx; padding-bottom: calc(16rpx + env(safe-area-inset-bottom));
+  background: #fff; border-top: 1rpx solid #F0F0F5; z-index: 10; }
+.gen-btn { width: 100%; height: 96rpx; border-radius: 48rpx; background: #576AFF;
+  color: #fff; font-size: 32rpx; font-weight: 600; border: none; }
+.gen-btn-loading { background: #A0AAFF; }
+.gen-btn::after { border: none; }
+
+/* Bottom sheet */
+.mask { position: fixed; inset: 0; background: rgba(0,0,0,0); z-index: 100;
+  pointer-events: none; transition: background 0.25s; }
+.mask-show { background: rgba(0,0,0,0.45); pointer-events: auto; }
+.sheet { position: fixed; bottom: 0; left: 0; right: 0; background: #fff;
+  border-radius: 24rpx 24rpx 0 0; z-index: 101;
+  transform: translateY(100%); transition: transform 0.3s ease; }
+.sheet-show { transform: translateY(0); }
+.sheet-hd { display: flex; align-items: center; justify-content: space-between;
+  padding: 32rpx 32rpx 16rpx; border-bottom: 1rpx solid #F0F0F5; }
+.sheet-title { font-size: 30rpx; font-weight: 600; color: #1C1C1E; }
+.sheet-close { font-size: 36rpx; color: #8E8E93; padding: 10rpx; }
+.tpl-card { padding: 28rpx 32rpx; border-bottom: 1rpx solid #F5F5F7; }
+.tpl-name { display: block; font-size: 28rpx; font-weight: 600; color: #1C1C1E;
+  margin-bottom: 8rpx; }
+.tpl-meta { font-size: 24rpx; color: #8E8E93; }
+.sheet-ft { padding: 20rpx 32rpx;
+  padding-bottom: calc(20rpx + env(safe-area-inset-bottom)); }
+.save-tpl-btn { width: 100%; background: #F5F5F7; color: #576AFF;
+  font-size: 28rpx; border: none; border-radius: 16rpx; }
+.save-tpl-btn::after { border: none; }

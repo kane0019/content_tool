@@ -1,0 +1,25 @@
+﻿<!--pages/test/test.wxml-->
+<view style="padding:20rpx;font-size:26rpx;">
+  <view style="font-weight:bold;font-size:32rpx;margin-bottom:20rpx;">Cloud Function Tests</view>
+
+  <view style="display:flex;flex-wrap:wrap;gap:16rpx;margin-bottom:24rpx;">
+    <button size="mini" type="default"  bindtap="testDeepSeek">  1. DeepSeek ping</button>
+    <button size="mini" type="primary"  bindtap="testGenerate">  2. Generate</button>
+    <button size="mini" type="default"  bindtap="testRefine">    3. Refine</button>
+    <button size="mini" type="default"  bindtap="testListTasks"> 4. List tasks</button>
+    <button size="mini" type="default"  bindtap="testTemplates"> 5. Templates</button>
+    <button size="mini" type="warn"     bindtap="clearLog">      clear</button>
+  </view>
+
+  <view wx:if="{{taskId}}" style="color:#888;font-size:22rpx;margin-bottom:8rpx;">
+    task: {{taskId.slice(-8)}} | {{status}}
+  </view>
+
+  <view wx:if="{{content}}" style="background:#f5f5f5;padding:16rpx;border-radius:8rpx;margin-bottom:16rpx;">
+    <text style="font-size:24rpx;">{{content}}</text>
+  </view>
+
+  <view style="background:#1a1a2e;padding:16rpx;border-radius:8rpx;min-height:120rpx;">
+    <text style="color:#00ff88;font-size:22rpx;font-family:monospace;">{{log}}</text>
+  </view>
+</view>

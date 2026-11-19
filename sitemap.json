@@ -1,0 +1,9 @@
+{
+  "desc": "About sendMessage in your app",
+  "rules": [
+    {
+      "action": "allow",
+      "page": "*"
+    }
+  ]
+}

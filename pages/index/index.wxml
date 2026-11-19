@@ -1,0 +1,106 @@
+<!--pages/index/index.wxml-->
+<view class="page">
+
+  <!-- Template banner -->
+  <view class="tpl-bar" bindtap="openTemplatePicker" wx:if="{{templates.length}}">
+    <text class="tpl-bar-icon">⚡</text>
+    <text class="tpl-bar-text">套用模板（{{templates.length}} 个）</text>
+    <text class="tpl-bar-arrow">›</text>
+  </view>
+
+  <scroll-view scroll-y class="form-scroll">
+    <view class="form">
+
+      <!-- 内容骨架 -->
+      <view class="field">
+        <view class="field-label">内容骨架 <text class="req">*</text></view>
+        <textarea class="textarea" placeholder="输入内容要点、段落结构或关键词提纲..."
+          value="{{skeleton}}" bindinput="onSkeletonInput"
+          auto-height maxlength="5000" />
+      </view>
+
+      <!-- 行文风格 -->
+      <view class="field">
+        <view class="field-label">行文风格 <text class="req">*</text></view>
+        <picker mode="selector" range="{{styleOptions}}" value="{{styleIndex}}" bindchange="onStyleChange">
+          <view class="picker-row">
+            <text class="picker-val">{{styleOptions[styleIndex]}}</text>
+            <text class="picker-arrow">›</text>
+          </view>
+        </picker>
+        <input wx:if="{{showCustomStyle}}" class="custom-input"
+          placeholder="直接写风格特征，如「句子短促，多用问句，语气冷静克制」" value="{{customStyle}}" bindinput="onCustomStyleInput" />
+      </view>
+
+      <!-- 目标平台 -->
+      <view class="field">
+        <view class="field-label">目标平台 <text class="req">*</text></view>
+        <view class="tag-group">
+          <view class="tag {{platformMap[item.value] ? 'tag-on' : ''}}"
+            wx:for="{{platformOptions}}" wx:key="value"
+            bindtap="togglePlatform" data-value="{{item.value}}">
+            {{item.label}}
+          </view>
+        </view>
+      </view>
+
+      <!-- 内容长度 -->
+      <view class="field">
+        <view class="field-label">内容长度</view>
+        <view class="seg-group">
+          <view class="seg {{lengthPref === item.value ? 'seg-on' : ''}}"
+            wx:for="{{lengthOptions}}" wx:key="value"
+            bindtap="onLengthTap" data-value="{{item.value}}">
+            <text class="seg-label">{{item.label}}</text>
+            <text class="seg-desc">{{item.desc}}</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 参考素材 (折叠) -->
+      <view class="field">
+        <view class="field-label-row" bindtap="toggleRefMaterial">
+          <text class="field-label">参考素材</text>
+          <text class="badge">可选</text>
+          <text class="toggle {{showRefMaterial ? 'open' : ''}}">▾</text>
+        </view>
+        <textarea wx:if="{{showRefMaterial}}" class="textarea"
+          placeholder="粘贴参考文章片段，仅作风格/信息参考，不会直接复制..."
+          value="{{refMaterial}}" bindinput="onRefInput"
+          auto-height maxlength="3000" />
+      </view>
+
+    </view>
+    <!-- Bottom padding to clear fixed button -->
+    <view style="height:180rpx;" />
+  </scroll-view>
+
+  <!-- Sticky generate button -->
+  <view class="bottom-bar">
+    <button class="gen-btn {{generating ? 'gen-btn-loading' : ''}}"
+      bindtap="generate" disabled="{{generating}}">
+      <text wx:if="{{!generating}}">开始生成</text>
+      <text wx:if="{{generating}}">生成中…</text>
+    </button>
+  </view>
+
+  <!-- Template bottom sheet -->
+  <view class="mask {{showTemplatePicker ? 'mask-show' : ''}}" catchtap="closeTemplatePicker" />
+  <view class="sheet {{showTemplatePicker ? 'sheet-show' : ''}}">
+    <view class="sheet-hd">
+      <text class="sheet-title">选择模板</text>
+      <text class="sheet-close" bindtap="closeTemplatePicker">✕</text>
+    </view>
+    <scroll-view scroll-y style="max-height:50vh;">
+      <view class="tpl-card" wx:for="{{templates}}" wx:key="id"
+        bindtap="applyTemplate" data-index="{{index}}">
+        <text class="tpl-name">{{item.name}}</text>
+        <text class="tpl-meta">{{item.config.style}} · {{item.config.audience}} · {{item.config.length_pref}}</text>
+      </view>
+    </scroll-view>
+    <view class="sheet-ft">
+      <button class="save-tpl-btn" bindtap="saveAsTemplate">将当前配置保存为模板</button>
+    </view>
+  </view>
+
+</view>

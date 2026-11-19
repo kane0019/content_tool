@@ -1,0 +1,127 @@
+<!--pages/result/result.wxml-->
+<view class="page">
+
+  <!-- Loading state -->
+  <view wx:if="{{status === 'running'}}" class="loading-area">
+    <view class="loading-icon">✨</view>
+    <view class="loading-text">AI 正在创作中…</view>
+    <view class="loading-sub">每 50 字更新一次</view>
+    <view class="streaming-box" wx:if="{{partialContent}}">
+      <text class="streaming-text">{{partialContent}}</text>
+      <text class="cursor">▍</text>
+    </view>
+  </view>
+
+  <!-- Failed state -->
+  <view wx:if="{{status === 'failed'}}" class="error-area">
+    <view class="error-icon">⚠️</view>
+    <view class="error-msg">{{errorMsg}}</view>
+    <button class="back-btn" bindtap="onClickBack">返回重试</button>
+  </view>
+
+  <!-- Done state -->
+  <scroll-view wx:if="{{status === 'done'}}" scroll-y class="result-scroll">
+
+    <!-- Title candidates -->
+    <view class="section" wx:if="{{titleCandidates.length}}">
+      <view class="sec-label">候选标题（点击复制）</view>
+      <view class="title-chip"
+        wx:for="{{titleCandidates}}" wx:key="index"
+        bindtap="copyTitle" data-index="{{index}}">
+        <text class="title-chip-text">{{item}}</text>
+        <text class="copy-icon">⎘</text>
+      </view>
+    </view>
+
+    <!-- Content -->
+    <view class="section">
+      <view class="sec-label">正文内容</view>
+      <view class="content-box">
+        <text class="content-text" user-select>{{content}}</text>
+      </view>
+    </view>
+
+    <view style="height:180rpx;" />
+  </scroll-view>
+
+  <!-- Done action bar -->
+  <view class="action-bar" wx:if="{{status === 'done'}}">
+    <view class="action-btn" bindtap="copyContent">
+      <text class="action-icon">⎘</text>
+      <text class="action-label">复制</text>
+    </view>
+    <view class="action-btn" bindtap="openRefineSheet" data-action="expand">
+      <text class="action-icon">+</text>
+      <text class="action-label">扩写</text>
+    </view>
+    <view class="action-btn" bindtap="openRefineSheet" data-action="shorten">
+      <text class="action-icon">−</text>
+      <text class="action-label">缩写</text>
+    </view>
+    <view class="action-btn" bindtap="openRefineSheet" data-action="polish">
+      <text class="action-icon">✦</text>
+      <text class="action-label">润色</text>
+    </view>
+  </view>
+
+  <!-- Refine bottom sheet -->
+  <view class="mask {{showRefineSheet ? 'mask-show' : ''}}" catchtap="closeRefineSheet" />
+  <view class="sheet {{showRefineSheet ? 'sheet-show' : ''}}">
+    <view class="sheet-hd">
+      <text class="sheet-title">
+        {{refineAction === 'expand' ? '扩写' : refineAction === 'shorten' ? '缩写' : '润色'}}
+      </text>
+      <text class="sheet-close" bindtap="closeRefineSheet">✕</text>
+    </view>
+    <scroll-view scroll-y class="sheet-body">
+      <!-- expand / shorten: simple confirm -->
+      <view wx:if="{{refineAction !== 'polish' && !refineResult && !refining}}">
+        <!-- Expand-specific warnings -->
+        <view wx:if="{{refineAction === 'expand'}}" class="expand-notice">
+          <view class="notice-save">
+            <text class="notice-icon">💾</text>
+            <text class="notice-text">扩写将生成新内容，建议先点「复制」保存当前正文</text>
+          </view>
+          <view class="notice-len {{contentLength > 600 ? 'notice-over' : 'notice-ok'}}">
+            <text>当前正文 {{contentLength}} 字 · 安全上限 600 字</text>
+            <text wx:if="{{contentLength > 600}}" class="notice-warn">⚠️ 超出安全字数，可能超时</text>
+            <text wx:else class="notice-safe">✓ 范围内</text>
+          </view>
+        </view>
+        <view class="refine-hint" wx:if="{{refineAction === 'shorten'}}">将对全文正文进行精简处理</view>
+        <button class="refine-go-btn" bindtap="doRefine">
+          {{refineAction === 'expand' ? '开始扩写' : '开始缩写'}}
+        </button>
+      </view>
+
+      <!-- polish: preset chips + optional custom input -->
+      <view wx:if="{{refineAction === 'polish' && !refineResult && !refining}}">
+        <view class="preset-label">选择润色方向</view>
+        <view class="preset-grid">
+          <view class="preset-chip {{selectedPolishMap[index] ? 'preset-on' : ''}}"
+            wx:for="{{polishPresets}}" wx:key="label"
+            bindtap="selectPolishPreset" data-index="{{index}}">
+            {{item.label}}
+          </view>
+        </view>
+        <textarea wx:if="{{showCustomPolishInput}}"
+          class="custom-polish-input"
+          placeholder="输入具体的改写要求，如「让语气更冷静」「用第二人称叙述」…"
+          value="{{customPolishInstruction}}"
+          bindinput="onCustomPolishInput"
+          auto-height maxlength="500" />
+        <button class="refine-go-btn" bindtap="doRefine">开始润色</button>
+      </view>
+
+      <view wx:if="{{refining}}" class="refining-tip">处理中…</view>
+      <view wx:if="{{refineResult}}">
+        <text class="refine-result" user-select>{{refineResult}}</text>
+        <view class="refine-actions">
+          <button class="refine-act-btn refine-copy" bindtap="copyRefineResult">复制结果</button>
+          <button class="refine-act-btn refine-apply" bindtap="applyRefineResult">替换正文</button>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+</view>
